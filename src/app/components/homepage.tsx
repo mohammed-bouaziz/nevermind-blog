@@ -1,40 +1,35 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import { PostMeta } from '../types/blog';
 
-// Mock data for initial development
-const categories = [
-  'All',
-  'Technology',
-  'Development',
-  'Design',
-  'Career',
-  'Life'
-];
+// We'll get these from the server component
+type HomePageProps = {
+  posts: PostMeta[];
+};
 
-const articles = [
-  {
-    id: 1,
-    title: 'Getting Started with Next.js',
-    description: 'Learn how to build modern web applications with Next.js, React, and TypeScript.',
-    category: 'Development',
-    slug: 'getting-started-with-nextjs'
-  },
-  // Add more mock articles as needed
-];
-
-const HomePage = () => {
+const HomePage = ({ posts = [] }: HomePageProps) => {
+  // Extract unique categories from posts
+  const allCategories = ['All', ...new Set(posts.map(post => post.category).filter(Boolean) as string[])];
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [filteredPosts, setFilteredPosts] = useState<PostMeta[]>(posts);
 
-  const filteredArticles = articles.filter(article => {
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  // Filter posts when search query or category changes
+  useEffect(() => {
+    const filtered = posts.filter(post => {
+      const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           post.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+    setFilteredPosts(filtered);
+  }, [searchQuery, selectedCategory, posts]);
 
   return (
     <div>
@@ -81,7 +76,7 @@ const HomePage = () => {
 
               {isDropdownOpen && (
                 <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
-                  {categories.map((category) => (
+                  {allCategories.map((category) => (
                     <button
                       key={category}
                       onClick={() => {
@@ -102,31 +97,33 @@ const HomePage = () => {
 
         {/* Articles List */}
         <div className="max-w-4xl mx-auto">
-          {filteredArticles.length === 0 ? (
+          {filteredPosts.length === 0 ? (
             <div className="text-center text-gray-600 py-12">
               No articles found matching your criteria.
             </div>
           ) : (
             <div className="space-y-8">
-              {filteredArticles.map((article) => (
+              {filteredPosts.map((post) => (
                 <article 
-                  key={article.id}
+                  key={post.slug}
                   className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
                 >
                   <div className="flex justify-between items-start">
                     <div>
                       <h2 className="text-xl font-rocknroll mb-2">
-                        {article.title}
+                        {post.title}
                       </h2>
                       <p className="text-gray-600 mb-4">
-                        {article.description}
+                        {post.description}
                       </p>
-                      <span className="inline-block bg-gray-100 text-gray-600 text-sm px-3 py-1 rounded-full">
-                        {article.category}
-                      </span>
+                      {post.category && (
+                        <span className="inline-block bg-gray-100 text-gray-600 text-sm px-3 py-1 rounded-full">
+                          {post.category}
+                        </span>
+                      )}
                     </div>
                     <Link 
-                      href={`/blog/${article.slug}`}
+                      href={`/blog/${post.slug}`}
                       className="text-blue-500 hover:text-blue-600 p-2"
                     >
                       <ArrowRight className="text-black" size={24} />

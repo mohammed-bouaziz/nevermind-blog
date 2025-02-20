@@ -1,0 +1,147 @@
+---
+title: Getting Started with Next.js
+description: Learn how to build modern web applications with Next.js, React, and TypeScript.
+date: '2024-02-17'
+coverImage: '/blog/nextjs-cover.jpg'
+readTime: '5 min read'
+category: 'Development'
+tags: ['Next.js', 'React', 'TypeScript']
+---
+
+# Getting Started with Next.js
+
+Next.js is a powerful React framework that makes building modern web applications straightforward and enjoyable. In this guide, we'll explore the key features that make Next.js stand out and get you started with your first project.
+
+## Why Choose Next.js?
+
+Next.js offers several advantages over a vanilla React application:
+
+1. **Server-Side Rendering (SSR)** - Improves performance and SEO
+2. **Static Site Generation (SSG)** - Pre-renders pages at build time
+3. **File-based Routing** - Simplifies navigation setup
+4. **API Routes** - Create backend endpoints easily
+5. **Built-in Image Optimization** - Automatically optimizes images
+
+## Setting Up Your First Project
+
+Let's start by creating a new Next.js project. You'll need Node.js installed on your machine.
+
+```bash
+npx create-next-app@latest my-next-app
+cd my-next-app
+npm run dev
+```
+
+This will create a new Next.js project and start the development server. Open [http://localhost:3000](http://localhost:3000) to see your application.
+
+## Understanding the File Structure
+
+Next.js uses a convention-based approach for its file structure:
+
+```
+my-next-app/
+├── app/
+│   ├── page.tsx       # Homepage
+│   ├── layout.tsx     # Root layout
+│   └── [...]/         # Other routes
+├── components/        # Reusable components
+├── public/            # Static assets
+└── package.json       # Dependencies and scripts
+```
+
+## Creating Your First Page
+
+With Next.js 13+ and the App Router, creating pages is simple. Here's a basic example:
+
+```tsx
+// app/about/page.tsx
+export default function AboutPage() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-4">About Us</h1>
+      <p>This is the about page of our Next.js application.</p>
+    </div>
+  );
+}
+```
+
+## Data Fetching
+
+Next.js provides several ways to fetch data:
+
+### Server Components (Recommended)
+
+```tsx
+// app/posts/page.tsx
+async function getPosts() {
+  const res = await fetch('https://api.example.com/posts');
+  if (!res.ok) throw new Error('Failed to fetch posts');
+  return res.json();
+}
+
+export default async function PostsPage() {
+  const posts = await getPosts();
+  
+  return (
+    <div>
+      <h1>Posts</h1>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+## Styling Your Application
+
+Next.js supports various styling methods. Using Tailwind CSS is popular:
+
+```tsx
+// Component with Tailwind CSS
+export default function Card({ title, description }) {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+      <h2 className="text-xl font-semibold mb-2">{title}</h2>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  );
+}
+```
+
+## Optimizing Images
+
+The Next.js Image component automatically optimizes images:
+
+```tsx
+import Image from 'next/image';
+
+export default function ProfileCard() {
+  return (
+    <div className="relative w-64 h-64">
+      <Image
+        src="/profile.jpg"
+        alt="Profile picture"
+        fill
+        className="object-cover rounded-full"
+      />
+    </div>
+  );
+}
+```
+
+## Conclusion
+
+Next.js provides an excellent developer experience while delivering optimized applications. By leveraging its built-in features like server-side rendering, file-based routing, and image optimization, you can build performant web applications quickly.
+
+As you continue your Next.js journey, explore more advanced topics like:
+
+- API Routes
+- Middleware
+- Internationalization
+- Authentication
+- Deployment strategies
+
+Happy coding!

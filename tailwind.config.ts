@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -16,41 +15,37 @@ module.exports = {
         sans: ['var(--font-geist-sans)'],
         mono: ['var(--font-geist-mono)'],
       },
-      typography: (theme: (arg0: string) => any) => ({
+      colors: {
+        background: 'rgb(var(--background))',
+        foreground: 'rgb(var(--foreground))',
+        accent: 'rgb(var(--accent))',
+        muted: 'rgb(var(--muted))',
+        card: 'rgb(var(--card))',
+      },
+      backgroundColor: {
+        card: 'rgb(var(--card))',
+      },
+      borderColor: {
+        accent: 'rgb(var(--accent))',
+      },
+      textColor: {
+        accent: 'rgb(var(--accent))',
+      },
+      typography: (theme) => ({
         DEFAULT: {
           css: {
-            'code::before': {
-              content: '""',
-            },
-            'code::after': {
-              content: '""',
-            },
-            'blockquote p:first-of-type::before': {
-              content: '""',
-            },
-            'blockquote p:last-of-type::after': {
-              content: '""',
-            },
-            h1: {
-              fontFamily: 'var(--font-rocknroll)',
-            },
-            h2: {
-              fontFamily: 'var(--font-rocknroll)',
-            },
-            h3: {
-              fontFamily: 'var(--font-rocknroll)',
-            },
-            h4: {
-              fontFamily: 'var(--font-rocknroll)',
-            },
-            img: {
-              borderRadius: '0.5rem',
-            },
+            'code::before': { content: '""' },
+            'code::after': { content: '""' },
+            'blockquote p:first-of-type::before': { content: '""' },
+            'blockquote p:last-of-type::after': { content: '""' },
+            h1: { fontFamily: 'var(--font-rocknroll)' },
+            h2: { fontFamily: 'var(--font-rocknroll)' },
+            h3: { fontFamily: 'var(--font-rocknroll)' },
+            h4: { fontFamily: 'var(--font-rocknroll)' },
+            img: { borderRadius: '0.5rem' },
             a: {
-              color: theme('colors.blue.500'),
-              '&:hover': {
-                color: theme('colors.blue.700'),
-              },
+              color: 'rgb(var(--accent))',
+              '&:hover': { color: 'rgb(var(--accent) / 0.8)' },
             },
             'pre code': {
               backgroundColor: 'transparent',
@@ -63,16 +58,25 @@ module.exports = {
               fontFamily: 'inherit',
               lineHeight: 'inherit',
             },
-            'pre': {
-              borderRadius: '0.5rem',
-            }
+            'pre': { borderRadius: '0.5rem' },
+            color: 'rgb(var(--foreground))',
           },
         },
+        dark: {
+          css: {
+            color: 'rgb(var(--foreground))',
+            a: { color: 'rgb(var(--accent))' },
+            strong: { color: 'rgb(var(--foreground))' },
+            h1: { color: 'rgb(var(--foreground))' },
+            h2: { color: 'rgb(var(--foreground))' },
+            h3: { color: 'rgb(var(--foreground))' },
+            h4: { color: 'rgb(var(--foreground))' },
+          }
+        }
       }),
     },
   },
   plugins: [
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require('@tailwindcss/typography'),
   ],
 }

@@ -2,3 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --foreground: 210, 210, 215;
+  --background: 20, 20, 25;
+  --accent: 246, 106, 233; /* Purple-pink accent color */
+  --muted: 50, 50, 60;
+  --card: 30, 30, 35;
+  --input-border: 60, 60, 70;
+}
+
+body {
+  color: rgb(var(--foreground));
+  background: rgb(var(--background));
+}
+
+/* Custom input styles */
+.bottom-border-input {
+  @apply border-0 border-b border-gray-600 bg-transparent px-0 py-2 focus:border-accent focus:ring-0;
+}
+
+/* Custom accent text */
+.accent-text {
+  @apply text-accent transition-colors duration-200;
+}
+
+/* Card styles */
+.minimalist-card {
+  @apply py-6 hover:bg-opacity-80 transition-all duration-200;
+}
